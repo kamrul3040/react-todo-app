@@ -1,0 +1,18 @@
+.outputTasks {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 7fr 1fr 1fr;
+    background: #000000;
+    padding: 5px;
+    border-radius: 8px;
+    color: #FFCF71;
+  }.taskEidit,
+  .taskRemove {
+      cursor: pointer;
+  }
+  .completed{
+    color: dimgrey;
+    text-decoration: line-through;
+  }
+  
+  

@@ -1,0 +1,15 @@
+button {
+  height: 30px;
+  border: none;
+  border-radius: 8px;
+  background: #000000;
+  color: #FFCF71;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 2px 5px;
+  cursor: pointer;
+}
+
+button[type="submit"] {
+  grid-column: 1/-1;
+}

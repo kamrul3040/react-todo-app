@@ -1,0 +1,15 @@
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    padding: 10px;
+    border-radius: 8px;
+    height: 30px;
+    color: #FFCF71;
+    font-weight: 600;
+    background: black;
+    width: 300px;
+    border: none;
+}
+input[type="text"] {
+    margin-right: 5px;
+}
