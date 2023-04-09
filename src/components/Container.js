@@ -9,7 +9,7 @@ uuidv4();
 export default function Container() {
   const [todos, setTodos] = useState([]);
   const addTodo = (todo) =>{
-    setTodos([...todos,{id:uuidv4(), task:todo, completed:false, isEditing:false}]);
+    setTodos([...todos,{id:uuidv4(), task:todo, completed:false, isEiditing:false}]);
   }
   console.log(todos);
   const toggleCompleted = (id) =>{
@@ -18,13 +18,20 @@ export default function Container() {
   const deletTodo = (id) =>{
     setTodos( todos.filter((todo) =>todo.id !== id) );
   }
+  const eiditTodo = (id) =>{
+    setTodos( todos.map((todo) =>todo.id === id ? {...todo, isEiditing: !todo.isEiditing} : todo) );
+  }
+const eiditTask =(task,id) =>{
+  setTodos( todos.map((todo) =>todo.id === id ? {...todo,task, isEiditing: !todo.isEiditing} : todo) );
+  console.log(todos);
+  }
 
   return (
     <div className={classes.container}>
 
             <h1>My Task List</h1>
             <InputForms addTodo={addTodo}/>
-            <OutputForms todos={todos} toggleCompleted={toggleCompleted} deletTodo={deletTodo}/>
+            <OutputForms todos={todos} toggleCompleted={toggleCompleted} deletTodo={deletTodo}eiditTodo={eiditTodo} eiditTask={eiditTask}/>
         </div>
   )
 }
