@@ -5,4 +5,5 @@ ul {
 li {
     display: inline;
     padding: 0 5px 0 0;
+    cursor: pointer;
 }

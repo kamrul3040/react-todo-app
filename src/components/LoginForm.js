@@ -1,5 +1,6 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React,{useState} from 'react'
+import { Link , useNavigate} from 'react-router-dom';
+import {useAuth} from '../contexts/AuthContext'
 import TextInput from './TextInput';
 import Label from './Label';
 import Info from './Info';
@@ -9,13 +10,51 @@ import classes from '../style/LoginForm.module.css'
 
 
 export default function LoginForm() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState('');
+  const [error,setError] = useState('');
+  const {login} = useAuth();
+  const navigalte = useNavigate();
+async function handleSubmit(e) {
+  e.preventDefault();
+
+  try{
+    setError('');
+    setLoading(true);
+    await login({email, password});
+    navigalte('/');
+  }catch(err){
+    console.log(err);
+    setLoading(false);
+    setError('Invalid email & password');
+  }
+}
+
   return (
-    <Form className={classes.loginForm}>
-         <Label for="email" >Email:</Label>
-         <TextInput type="email" name="email" id="email" placeholder="Enter Your Email" />
-         <Label for="password" >Password:</Label>
-         <TextInput type="password" name="pasword" id="pasword" placeholder="Enter Your Password" />
-         <Button type="submit">Submit</Button>
+    <Form className={classes.loginForm} onSubmit={handleSubmit}>
+         <Label  >Email:</Label>
+         <TextInput
+          type="email" 
+          name="email" 
+          id="email" 
+          placeholder="Enter Your Email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+         />
+         <Label  >Password:</Label>
+         <TextInput
+          type="password" 
+          name="pasword" 
+          id="pasword" 
+          placeholder="Enter Your Password" 
+          required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+         />
+         <Button type="submit" disabled={loading}>Submit</Button>
+         {error && <p className='error'>{error}</p>}
          <Info>
          Don't have an account? <Link to={"/signup"}>Signup</Link> instead.
          </Info>

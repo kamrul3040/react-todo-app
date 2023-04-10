@@ -4,6 +4,7 @@ import OutputForms from './OutputForms';
 import classes from '../style/Container.module.css';
 import {v4 as uuidv4} from 'uuid';
 
+
 uuidv4();
 
 export default function Container() {
@@ -23,14 +24,16 @@ export default function Container() {
   }
 const eiditTask =(task,id) =>{
   setTodos( todos.map((todo) =>todo.id === id ? {...todo,task, isEiditing: !todo.isEiditing} : todo) );
-  console.log(todos);
+  
   }
+  // const {todo} = addTodo;
+// const {id, todo, completed, isEiditing} = todos;
 
   return (
     <div className={classes.container}>
 
             <h1>My Task List</h1>
-            <InputForms addTodo={addTodo}/>
+            <InputForms addTodo={addTodo} id={todos.id}/>
             <OutputForms todos={todos} toggleCompleted={toggleCompleted} deletTodo={deletTodo}eiditTodo={eiditTodo} eiditTask={eiditTask}/>
         </div>
   )

@@ -1,16 +1,30 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import '../style/Navigation.module.css'
+import { Link } from 'react-router-dom';
+import '../style/Navigation.module.css';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faUser} from '@fortawesome/free-solid-svg-icons';
+import {faRightToBracket} from '@fortawesome/free-solid-svg-icons';
+import { useAuth } from './../contexts/AuthContext';
 
 export default function Navigation() {
+  const {currentUser,logout} = useAuth();
+  console.log(currentUser);
   return (
     <ul>  
-      <li><i className="fa-solid fa-user"></i></li>
-      <li><Link to="/login">Login</Link></li>
-      <li><Link to="/signup">Signup</Link></li>
-      
+      {currentUser ?(
+        <>
+          <li><FontAwesomeIcon icon={faUser} /></li>
+          <li>{currentUser.displayName}</li>
+          <li onClick={logout}><FontAwesomeIcon icon={faRightToBracket} /></li>
+        </>
+      ):(
+        <>
+          <li><Link to="/login">Login</Link></li>
+          <li><Link to="/signup">Signup</Link></li> 
+        </>
+      )}
           
-                {/* <!-- <li><a href="signup.html"><i class="fa-sharp fa-solid fa-right-to-bracket"></i></a></li> --> */}
+         
      </ul>
   )
 }

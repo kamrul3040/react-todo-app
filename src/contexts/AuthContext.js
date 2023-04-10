@@ -19,13 +19,12 @@ export function  AuthProvider ({children}){
 
   useEffect(() => {
     const auth = getAuth();
-
     const unSubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       setLoading(false);
     });
-    return unSubscribe
-  },[])
+    return unSubscribe;
+  }, []);
 // signup function
   async function signup({email, password,userName}) {
   const auth = getAuth();
@@ -47,7 +46,7 @@ export function  AuthProvider ({children}){
   //logout function
     function logout() {
       const auth = getAuth();
-      return(signOut(auth.currentUser));
+      return(signOut(auth));
     }
     const value ={
       currentUser,

@@ -20,13 +20,13 @@ export default function SignupForm() {
 
   async function handleSubmit(e){
     e.preventDefault();
-    if( !password === correctPassword ){
+    if( password !== correctPassword ){
       return setError("Password don't match.");
     }
     try{
       setError('');
       setLoading(true);
-      await signup(email,password,userName)
+      await signup({email,password,userName});
       navigate('/')
     }catch(err){
       console.log(err);
@@ -39,7 +39,7 @@ export default function SignupForm() {
   return ( 
     <Form className={classes.signupForm} onSubmit={handleSubmit}>
       
-      <Label for="name">Name:</Label>
+      <Label >Name:</Label>
       <TextInput
         type="text" 
         name="name" 
@@ -49,7 +49,7 @@ export default function SignupForm() {
         value={userName}
         onChange={(e) => setUserName(e.target.value)}
        />
-      <Label for="email">Email:</Label>
+      <Label>Email:</Label>
       <TextInput
         type="email" 
         name="email" 
@@ -59,7 +59,7 @@ export default function SignupForm() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
        />
-      <Label for="password">Password:</Label>
+      <Label >Password:</Label>
       <TextInput
         type="password" 
         name="emapasswordil" 
@@ -69,7 +69,7 @@ export default function SignupForm() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
        />
-      <Label for="correct-password">Correct Password:</Label>
+      <Label>Correct Password:</Label>
       <TextInput
         type="password" 
         name="correct-password" 
@@ -79,8 +79,8 @@ export default function SignupForm() {
         value={correctPassword}
         onChange={(e) => setCorrectPassword(e.target.value)}
        />
-      <Button disabled={loading} type="submit">Submit</Button>
-      {error && <p>{error}</p>}
+      <Button type="submit" disabled={loading} >Submit</Button>
+      {error && <p className='error'>{error}</p>}
       <Info>Don you have an account? <Link to={"/login"}>Login</Link> instead.</Info>
     </Form>
   )
