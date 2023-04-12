@@ -1,7 +1,6 @@
 import {
   get,
   getDatabase,
-  limitToFirst,
   orderByKey,
   query,
   ref,
@@ -11,7 +10,7 @@ import { useAuth } from './../contexts/AuthContext';
 export default function useData() {
   const { currentUser } = useAuth();
   const { uid } = currentUser||{};
-  console.log(uid);
+  // console.log(uid);
   const [loading, setLoading] = useState();
   const [error, setError] = useState();
   const [tasks, setTasks] = useState([]);

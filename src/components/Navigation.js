@@ -8,7 +8,7 @@ import { useAuth } from './../contexts/AuthContext';
 
 export default function Navigation() {
   const {currentUser,logout} = useAuth();
-  console.log(currentUser);
+  // console.log(currentUser);
   return (
     <ul>  
       {currentUser ?(

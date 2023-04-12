@@ -1,4 +1,4 @@
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, set,child,get } from "firebase/database";
 import React, { useState } from "react";
 import { useAuth } from "./../contexts/AuthContext";
 import Button from "./Button";
@@ -9,8 +9,9 @@ import TextInput from "./TextInput";
 export default function InputForms({ addTodo, todos }) {
   const [value, setValue] = useState("");
   const { currentUser } = useAuth();
+  const lastTodo = todos.slice(-1)[0]
   const { uid } = currentUser||{};
-  console.log(uid);
+  // console.log(lastTodo);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,14 +24,19 @@ export default function InputForms({ addTodo, todos }) {
   if (todos.length > 0) {
     const writeUserData = async () => {
       const db = getDatabase();
-      const resultRef = ref(db, `Tasks/${uid}`);
+      const resultRef = ref(db, `Tasks/${uid}/`);
 
-      await set(resultRef, todos)
-        .then(() => {
-          console.log("todo added");
+      const dbRef = ref(getDatabase());
+      get(child(dbRef, `Tasks/${uid}`))
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            set(resultRef, [...snapshot.val(), lastTodo]);
+          } else {
+            set(resultRef, [lastTodo]);
+          }
         })
         .catch((error) => {
-          console.log(error);
+          console.error(error);
         });
     };
 
