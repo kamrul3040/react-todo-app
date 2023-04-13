@@ -21,7 +21,7 @@ export default function InputForms({ addTodo, todos }) {
   };
   console.log(todos);
 
-  if (todos.length > 0) {
+  if (todos.length > 0 && currentUser) {
     const writeUserData = async () => {
       const db = getDatabase();
       const resultRef = ref(db, `Tasks/${uid}/`);
