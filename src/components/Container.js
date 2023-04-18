@@ -32,9 +32,10 @@ export default function Container() {
   const eiditTodo = (id) => {
     setTodos(
       todos.map((todo) =>
-        todo.id === id ? { ...todo, isEiditing: !todo.isEiditing } : todo
+       console.log(todo,id)
       )
     );
+    
   };
   
   const eiditTask = (task, id) => {
@@ -46,7 +47,6 @@ export default function Container() {
   };
   // const {todo} = addTodo;
   // const {id, todo, completed, isEiditing} = todos;
-
   return (
     <div className={classes.container}>
       <h1>My Task List</h1>

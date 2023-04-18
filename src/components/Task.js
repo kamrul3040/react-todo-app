@@ -4,7 +4,6 @@ import {faPenToSquare} from '@fortawesome/free-solid-svg-icons';
 import {faTrash} from '@fortawesome/free-solid-svg-icons';
 
 export default function Task({task,number,completed,id,toggleCompleted,deletTodo,eiditTodo}) {
-  console.log("task Called");
   return (
         <div className="outputTasks">
             <div className="taskNumber">{number}</div>
@@ -13,5 +12,6 @@ export default function Task({task,number,completed,id,toggleCompleted,deletTodo
             </div>
             <div onClick={()=>deletTodo(id)}><FontAwesomeIcon icon={faTrash} /></div>
         </div>
+       
   )
 }

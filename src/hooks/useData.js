@@ -29,6 +29,7 @@ export default function useData() {
         setError(false);
         setLoading(true);
         const snapshot = await get(taskQuery);
+        console.log(snapshot.val());
         setLoading(false);
         if (snapshot.exists()) {
           setTasks((prevtasks) => {
@@ -43,5 +44,6 @@ export default function useData() {
     }
     fetchtasks();
   }, [uid]);
+  console.log(tasks);
   return { loading, error, tasks };
 }
