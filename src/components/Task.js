@@ -7,7 +7,7 @@ export default function Task({task,number,completed,id,toggleCompleted,deletTodo
   return (
         <div className="outputTasks">
             <div className="taskNumber">{number}</div>
-            <p onClick={()=>toggleCompleted(id)} className={`${completed? "completed" :"hi"}`}>{task}</p>
+            <p onClick={(e)=>toggleCompleted(e.target.id)} className={`${completed? "completed" :"hi"}`}>{task}</p>
             <div onClick={()=>eiditTodo(id)} ><FontAwesomeIcon icon={faPenToSquare} />
             </div>
             <div onClick={()=>deletTodo(id)}><FontAwesomeIcon icon={faTrash} /></div>

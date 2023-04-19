@@ -10,7 +10,6 @@ import { useAuth } from './../contexts/AuthContext';
 export default function useData() {
   const { currentUser } = useAuth();
   const { uid } = currentUser||{};
-  // console.log(uid);
   const [loading, setLoading] = useState();
   const [error, setError] = useState();
   const [tasks, setTasks] = useState([]);
@@ -29,7 +28,6 @@ export default function useData() {
         setError(false);
         setLoading(true);
         const snapshot = await get(taskQuery);
-        console.log(snapshot.val());
         setLoading(false);
         if (snapshot.exists()) {
           setTasks((prevtasks) => {
@@ -44,6 +42,5 @@ export default function useData() {
     }
     fetchtasks();
   }, [uid]);
-  console.log(tasks);
   return { loading, error, tasks };
 }

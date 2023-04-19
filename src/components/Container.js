@@ -8,6 +8,7 @@ uuidv4();
 
 export default function Container() {
   const [todos, setTodos] = useState([]);
+  const [data, setData] = useState([]);
 
   const addTodo = (todo) => {
     setTodos([
@@ -32,12 +33,11 @@ export default function Container() {
   const eiditTodo = (id) => {
     setTodos(
       todos.map((todo) =>
-       console.log(todo,id)
+        todo.id === id ? { ...todo, isEiditing: !todo.isEiditing } : todo
       )
     );
-    
   };
-  
+
   const eiditTask = (task, id) => {
     setTodos(
       todos.map((todo) =>
@@ -45,18 +45,28 @@ export default function Container() {
       )
     );
   };
+  const taskAdd = (data) =>{
+    setData(data);
+  }
   // const {todo} = addTodo;
   // const {id, todo, completed, isEiditing} = todos;
+console.log(data);
   return (
     <div className={classes.container}>
       <h1>My Task List</h1>
-      <InputForms addTodo={addTodo} todos={todos} uiId={uuidv4()} />
+      <InputForms
+        addTodo={addTodo}
+        todos={todos}
+        uiId={uuidv4()}
+        setTodo={setTodos}
+      />
       <OutputForms
         todos={todos}
         toggleCompleted={toggleCompleted}
         deletTodo={deletTodo}
         eiditTodo={eiditTodo}
         eiditTask={eiditTask}
+        taskAdd={taskAdd}
       />
     </div>
   );

@@ -1,150 +1,107 @@
+import "firebase/database";
+import { getDatabase, off, onValue, ref } from "firebase/database";
+import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import useData from "../hooks/useData";
-import {EiditTask} from "./EiditTask"
+import classes from "../style/Output.module.css"
+import EditTask from "./EiditTask";
 import Task from "./Task";
-import TextInput from "./TextInput";
+
 export default function OutputForms({
   todos,
   toggleCompleted,
   deletTodo,
   eiditTodo,
   eiditTask,
+  taskAdd
 }) {
-  const { loading, error, tasks } = useData();
   const { currentUser } = useAuth();
+  const { uid } = currentUser || {};
 
-  console.log(tasks);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    taskAdd(data);
+  },[data,taskAdd])
 
-  // Rerender the tasks
-  // const RenderTask = (tasks) => {
-  //   <section className={classes.outputForm}>
-  //     {currentUser
-  //       ? tasks.length > 0
-  //         ? tasks.map(
-  //             (task, index) => (
-  //               // console.log(task.isEiditing),
-  //               task.isEiditing
-  //                 ? ((
-  //                     <EiditTask
-  //                       key={task?.id}
-  //                       id={task?.id}
-  //                       eiditTask={eiditTask}
-  //                       task={task?.task}
-  //                       number={index + 1}
-  //                     />
-  //                   )
-  //                   // console.log("Eiditing  calld"))
-  //                 : (
-  //                     <Task
-  //                       task={task}
-  //                       number={index + 1}
-  //                       key={task.id}
-  //                       id={task.id}
-  //                       completed={task.completed}
-  //                       toggleCompleted={toggleCompleted}
-  //                       deletTodo={deletTodo}
-  //                       eiditTodo={eiditTodo}
-  //                     />
-  //                   )
-  //             )
-  //         : console.log(tasks)
-  //       : todos.map((todo, index) =>
-  //           todo.isEiditing ? (
-  //             <EiditTask
-  //               key={todo.id}
-  //               id={todo.id}
-  //               eiditTask={eiditTask}
-  //               task={todo.task}
-  //               number={index + 1}
-  //             />
-  //           ) : (
-  //             <Task
-  //               task={todo.task}
-  //               number={index + 1}
-  //               key={todo.id}
-  //               id={todo.id}
-  //               completed={todo.completed}
-  //               toggleCompleted={toggleCompleted}
-  //               deletTodo={deletTodo}
-  //               eiditTodo={eiditTodo}
-  //             />
-  //           )
-  //         )}
-  //   </section>;
-  // };
-  // useEffect(() => {
-  //   RenderTask(tasks);
-  // }, [tasks]);
+  useEffect(() => {
+    // Set up Firebase listener when component mounts
+    if (uid !== null) {
+      setLoading(true);
+      async function fetchDta() {
+        const databaseRef = ref(getDatabase(), "Tasks/" + uid);
+        await onValue(databaseRef, (snapshot) => {
+          // Get data from snapshot
+          console.log(snapshot.val());
+          const newData = snapshot.val();
+          // Update component state with new data
+          setData(newData);
+        });
 
-  // return <RenderTask />;
+        // Clean up Firebase listener when component unmounts
+        return () => {
+          off(databaseRef);
+        };
+      }
+      setLoading(false);
+      fetchDta();
+    }
+    
+  }, [uid]);
 
   return (
-    <div>
-      <div>
+      <section className={classes.outputForm}>
         {" "}
-        {!currentUser && (
-            todos?.map((task, idx) => {
-              const { id, task: showTask, isEiditing } = task || {};
-              console.log(isEiditing);
-              return (
-                <div>
-                  {!isEiditing ? (
-                    <Task
-                      key={id}
-                      id={id}
-                      eiditTodo={eiditTodo}
-                      task={showTask}
-                      number={idx + 1}
-                      toggleCompleted={toggleCompleted}
-                      deletTodo={deletTodo}
-                    />
-                  ) : (
-                    console.log("eidit called"),
-                    <EiditTask
-                      key={id}
-                      id={task.id}
-                      eiditTask={eiditTask}
-                      task={showTask}
-                      number={idx + 1}
-                    />
-                  )}
-                </div>
-              );
-            })
-            )}
         {loading && <div>loading..........</div>}
-        {!loading &&
-          !error &&
-          tasks?.map((task, idx) => {
-            const { id, task: showTask, isEiditing } = task || {};
-            console.log(isEiditing);
-            return (
-              <div>
-                {!isEiditing ? (
-                  <Task
-                    key={id}
-                    id={id}
-                    eiditTodo={eiditTodo}
-                    task={showTask}
-                    number={idx + 1}
-                    toggleCompleted={toggleCompleted}
-                    deletTodo={deletTodo}
-                  />
-                ) : (
-                  console.log("eidit called"),
-                  <EiditTask
-                    key={id}
-                    id={task.id}
-                    eiditTask={eiditTask}
-                    task={showTask}
-                    number={idx + 1}
-                  />
-                )}
-              </div>
-            );
-          })}
-          
-      </div>
-    </div>
+        {currentUser ? data?.map((task, idx) => {
+          const { id, task: showTask, isEiditing } = task || {};
+          return (
+            <div>
+              {!isEiditing ? (
+                <Task
+                  key={id}
+                  id={id}
+                  eiditTodo={eiditTodo}
+                  toggleCompleted={toggleCompleted}
+                  task={showTask}
+                  number={idx + 1}
+                />
+              ) : (
+                <EditTask
+                  key={id}
+                  id={task.id}
+                  eiditTask={eiditTask}
+                  task={showTask}
+                  number={1}
+                />
+              )}
+            </div>
+          );
+        }):
+        todos?.map((todo, index) =>
+        todo.isEiditing ? (
+          <EditTask
+            key={todo.id}
+            id={todo.id}
+            eiditTask={eiditTask}
+            task={todo.task}
+            number={index + 1}
+          />
+        ) : (
+          <Task
+            task={todo.task}
+            number={index + 1}
+            key={todo.id}
+            id={todo.id}
+            completed={todo.completed}
+            toggleCompleted={toggleCompleted}
+            deletTodo={deletTodo}
+            eiditTodo={eiditTodo}
+          />
+        )
+      )
+    
+        }
+        
+      </section>
   );
 }

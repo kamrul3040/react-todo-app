@@ -1,4 +1,4 @@
-import { getDatabase, ref, set,child,get } from "firebase/database";
+import { child, get, getDatabase, ref, set } from "firebase/database";
 import React, { useState } from "react";
 import { useAuth } from "./../contexts/AuthContext";
 import Button from "./Button";
@@ -6,12 +6,12 @@ import Form from "./Form";
 import Label from "./Label";
 import TextInput from "./TextInput";
 
-export default function InputForms({ addTodo, todos }) {
+export default function InputForms({ addTodo, todos, setTodo }) {
   const [value, setValue] = useState("");
   const { currentUser } = useAuth();
-  const lastTodo = todos.slice(-1)[0]
-  const { uid } = currentUser||{};
-  // console.log(lastTodo);
+  const lastTodo = todos.slice(-1)[0];
+  const { uid } = currentUser || {};
+  console.log(lastTodo);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -19,7 +19,6 @@ export default function InputForms({ addTodo, todos }) {
 
     setValue("");
   };
-  console.log(todos);
 
   if (todos.length > 0 && currentUser) {
     const writeUserData = async () => {
@@ -30,7 +29,9 @@ export default function InputForms({ addTodo, todos }) {
       get(child(dbRef, `Tasks/${uid}`))
         .then((snapshot) => {
           if (snapshot.exists()) {
-            set(resultRef, [...snapshot.val(), lastTodo]);
+            set(resultRef, [...snapshot.val(), lastTodo]).then(() => {
+              setTodo("");
+            });
           } else {
             set(resultRef, [lastTodo]);
           }
