@@ -11,11 +11,11 @@ export default function OutputForms({
   deletTodo,
   eiditTodo,
   eiditTask,
-  // loading,
+  updatedData,
 }) {
   const {data, loading} = useData();
   const { currentUser } = useAuth();
-  console.log(data,loading);
+  console.log(updatedData);
   return (
     <section className={classes.outputForm}>
       {" "}

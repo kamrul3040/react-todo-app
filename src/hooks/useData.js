@@ -31,6 +31,5 @@ export default function useData() {
       fetchDta();
     }
   }, [uid]);
-  console.log(data);
   return { loading, data };
 }

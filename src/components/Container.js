@@ -10,7 +10,8 @@ uuidv4();
 
 export default function Container() {
   const [todos, setTodos] = useState("");
-  const {data, } = useData();
+  const [updatedData, setUpdatedData] = useState([]);
+  // const {data, } = useData();
   const addTodo = (todo) => {
     setTodos([
       ...todos,
@@ -19,7 +20,7 @@ export default function Container() {
   };
   const toggleCompleted = (id) => {
     setTodos(
-      data.map((task) =>
+      todos.map((task) =>
         task.id === id ? { ...task, completed: !task.completed } : task
       )
     );
@@ -43,7 +44,7 @@ export default function Container() {
       )
     );
   };
-  console.log(data);
+  console.log(updatedData);
   return (
     <div className={classes.container}>
       <h1>My Task List</h1>
@@ -59,7 +60,7 @@ export default function Container() {
         deletTodo={deletTodo}
         eiditTodo={eiditTodo}
         eiditTask={eiditTask}
-        // setData={setData}
+        // updatedData={updatedData}
         // datas={data}
         // loading={loading}
       />
