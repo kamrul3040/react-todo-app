@@ -11,7 +11,6 @@ export default function InputForms({ addTodo, todos, setTodo }) {
   const { currentUser } = useAuth();
   const lastTodo = todos.slice(-1)[0];
   const { uid } = currentUser || {};
-  console.log(lastTodo);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,7 +19,7 @@ export default function InputForms({ addTodo, todos, setTodo }) {
     setValue("");
   };
 
-  if (todos.length > 0 && currentUser) {
+  if (todos !== "" && todos.length > 0 && currentUser) {
     const writeUserData = async () => {
       const db = getDatabase();
       const resultRef = ref(db, `Tasks/${uid}/`);

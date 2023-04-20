@@ -1,46 +1,36 @@
 import {
-  get,
-  getDatabase,
-  orderByKey,
-  query,
-  ref,
+  getDatabase, off, onValue, ref
 } from "firebase/database";
 import { useEffect, useState } from "react";
 import { useAuth } from './../contexts/AuthContext';
 export default function useData() {
   const { currentUser } = useAuth();
-  const { uid } = currentUser||{};
-  const [loading, setLoading] = useState();
-  const [error, setError] = useState();
-  const [tasks, setTasks] = useState([]);
-  useEffect(() => {
-    async function fetchtasks() {
-      //database rellated work
-      const db = getDatabase();
-      const taskRef = ref(db, "Tasks/" + uid);
-      const taskQuery = query(
-        taskRef,
-        orderByKey(),
-      );
+  const { uid } = currentUser || {};
 
-      //request firebase database
-      try {
-        setError(false);
-        setLoading(true);
-        const snapshot = await get(taskQuery);
-        setLoading(false);
-        if (snapshot.exists()) {
-          setTasks((prevtasks) => {
-            return [...prevtasks, ...Object.values(snapshot.val())];
-          });
-        } 
-      } catch (err) {
-        console.log(err);
-        setError(true);
-        setLoading(false);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+     // Set up Firebase listener when component mounts
+     if (uid !== null) {
+      setLoading(true);
+      async function fetchDta() {
+        const databaseRef = ref(getDatabase(), "Tasks/" + uid);
+        await onValue(databaseRef, (snapshot) => {
+          // Get data from snapshot
+          const newData = snapshot.val();
+          // Update component state with new data
+            setData(newData)
+        });
+
+        // Clean up Firebase listener when component unmounts
+        return () => {
+          off(databaseRef);
+        };
       }
+      setLoading(false);
+      fetchDta();
     }
-    fetchtasks();
   }, [uid]);
-  return { loading, error, tasks };
+  console.log(data);
+  return { loading, data };
 }

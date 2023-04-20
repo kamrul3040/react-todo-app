@@ -1,31 +1,29 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import { v4 as uuidv4 } from "uuid";
 import classes from "../style/Container.module.css";
 import InputForms from "./InputForms";
 import OutputForms from "./OutputForms";
+import "firebase/database";
+import useData from "../hooks/useData";
 
 uuidv4();
 
 export default function Container() {
-  const [todos, setTodos] = useState([]);
-  const [data, setData] = useState([]);
-
+  const [todos, setTodos] = useState("");
+  const {data, } = useData();
   const addTodo = (todo) => {
     setTodos([
       ...todos,
       { id: uuidv4(), task: todo, completed: false, isEiditing: false },
     ]);
   };
-
-  // console.log(todos);
   const toggleCompleted = (id) => {
     setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      data.map((task) =>
+        task.id === id ? { ...task, completed: !task.completed } : task
       )
     );
   };
-
   const deletTodo = (id) => {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
@@ -45,12 +43,7 @@ export default function Container() {
       )
     );
   };
-  const taskAdd = (data) =>{
-    setData(data);
-  }
-  // const {todo} = addTodo;
-  // const {id, todo, completed, isEiditing} = todos;
-console.log(data);
+  console.log(data);
   return (
     <div className={classes.container}>
       <h1>My Task List</h1>
@@ -66,7 +59,9 @@ console.log(data);
         deletTodo={deletTodo}
         eiditTodo={eiditTodo}
         eiditTask={eiditTask}
-        taskAdd={taskAdd}
+        // setData={setData}
+        // datas={data}
+        // loading={loading}
       />
     </div>
   );
