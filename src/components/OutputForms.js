@@ -11,11 +11,10 @@ export default function OutputForms({
   deletTodo,
   eiditTodo,
   eiditTask,
-  updatedData,
 }) {
   const {data, loading} = useData();
   const { currentUser } = useAuth();
-  console.log(updatedData);
+  console.log(data);
   return (
     <section className={classes.outputForm}>
       {" "}
@@ -31,6 +30,7 @@ export default function OutputForms({
                     id={id}
                     eiditTodo={eiditTodo}
                     toggleCompleted={toggleCompleted}
+                    deletTodo={deletTodo}
                     task={showTask}
                     number={idx + 1}
                     completed={task.completed}

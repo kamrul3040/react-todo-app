@@ -3,9 +3,10 @@ import {
 } from "firebase/database";
 import { useEffect, useState } from "react";
 import { useAuth } from './../contexts/AuthContext';
-export default function useData() {
+export default function useData(updatedData) {
   const { currentUser } = useAuth();
   const { uid } = currentUser || {};
+  console.log(updatedData);
 
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
