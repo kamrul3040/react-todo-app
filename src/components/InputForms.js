@@ -12,14 +12,15 @@ export default function InputForms({ addTodo, todos, setTodo }) {
   const lastTodo = todos.slice(-1)[0];
   const { uid } = currentUser || {};
 
-if(value!=="" ){
-  
-}
-const handleSubmit = (e) => {
-  e.preventDefault();
-  addTodo(value);
 
-  setValue("");
+const handleSubmit = (e) => {
+  if(value!=="" ){
+    addTodo(value);
+
+    setValue("");
+  }
+  e.preventDefault();
+  
 };
   useEffect(() => {
     if (todos !== "" && todos.length > 0 && currentUser) {
