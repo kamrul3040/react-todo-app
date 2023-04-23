@@ -43,18 +43,27 @@ export default function Container() {
     const resultRef = ref(db, `Tasks/${uid}/`);
     // const dataQuery = query(dataRef, orderByKey());
    
-    get(child(dataRef,"Tasks/" + uid)).then((snapshot) => {
-      if (snapshot.exists()) {
-       set(resultRef, snapshot.val().map((task) => 
-       task.id === id ? { ...task, completed: !task.completed } : task
-     ))
-      } else {
-        console.log("No data available");
-      }
-    })
-   .catch((error) => {
-      console.error(error);
-    });
+    if(currentUser){
+      get(child(dataRef,"Tasks/" + uid)).then((snapshot) => {
+        if (snapshot.exists()) {
+         set(resultRef, snapshot.val().map((task) => 
+         task.id === id ? { ...task, completed: !task.completed } : task
+       ))
+        } else {
+          console.log("No data available");
+        }
+      })
+     .catch((error) => {
+        console.error(error);
+      });
+    }else{
+      setTodos(
+            todos.map((task) =>
+            
+              task.id === id ? { ...task, completed: !task.completed } : task
+            )
+          );
+    }
   };
   // const toggleCompleted = (id) => {
   //   setUpdatedData(
@@ -69,74 +78,78 @@ export default function Container() {
     const resultRef = ref(db, `Tasks/${uid}/`);
     // const dataQuery = query(dataRef, orderByKey());
    
-    get(child(dataRef,"Tasks/" + uid)).then((snapshot) => {
-      if (snapshot.exists()) {
-       set(resultRef, snapshot.val().filter((task) => task.id !== id))
-      } else {
-        console.log("No data available");
-      }
-    })
-   .catch((error) => {
-      console.error(error);
-    });
+    if(currentUser){
+      get(child(dataRef,"Tasks/" + uid)).then((snapshot) => {
+        if (snapshot.exists()) {
+         set(resultRef, snapshot.val().filter((task) => task.id !== id))
+        } else {
+          console.log("No data available");
+        }
+      })
+     .catch((error) => {
+        console.error(error);
+      });
+    }else{
+      setTodos(todos.filter((todo) => todo.id !== id));
+    }
   };
-  // const deletTodo = (id) => {
-  //   setTodos(todos.filter((todo) => todo.id !== id));
-  // };
 
   async function eiditTodo (id)  {
     const dataRef = ref(db);
     const resultRef = ref(db, `Tasks/${uid}/`);
     // const dataQuery = query(dataRef, orderByKey());
    
-    get(child(dataRef,"Tasks/" + uid)).then((snapshot) => {
-      if (snapshot.exists()) {
-       set(resultRef, snapshot.val().map((task) => 
-       task.id === id ? { ...task, isEiditing: !task.completed } : task
-     ))
-      } else {
-        console.log("No data available");
-      }
-    })
-   .catch((error) => {
-      console.error(error);
-    });
+    if (currentUser) {
+      get(child(dataRef,"Tasks/" + uid)).then((snapshot) => {
+        if (snapshot.exists()) {
+         set(resultRef, snapshot.val().map((task) => 
+         task.id === id ? { ...task, isEiditing: !task.completed } : task
+       ))
+        } else {
+          console.log("No data available");
+        }
+      })
+     .catch((error) => {
+        console.error(error);
+      });
+    }else{
+      setTodos(
+            todos.map((todo) =>
+              todo.id === id ? { ...todo, isEiditing: !todo.isEiditing } : todo
+            )
+          );
+    }
   };
-  // const eiditTodo = (id) => {
-  //   setTodos(
-  //     todos.map((todo) =>
-  //       todo.id === id ? { ...todo, isEiditing: !todo.isEiditing } : todo
-  //     )
-  //   );
-  // };
 
-  async function eiditTask (tasks,id)  {
-    const dataRef = ref(db);
-    const resultRef = ref(db, `Tasks/${uid}/`);
-    // const dataQuery = query(dataRef, orderByKey());
-    
-   
-    get(child(dataRef,"Tasks/" + uid)).then((snapshot) => {
-      if (snapshot.exists()) {
-       set(resultRef, snapshot.val().map((task) => 
-       task.id === id ? { ...task,task:tasks, isEiditing: !task.isEiditing } : task,
-       console.log(tasks)
-     ))
-      } else {
-        console.log("No data available");
-      }
-    })
-   .catch((error) => {
-      console.error(error);
-    });
-  };
-  // const eiditTask = (task, id) => {
-  //   setTodos(
-  //     todos.map((todo) =>
-  //       todo.id === id ? { ...todo, task, isEiditing: !todo.isEiditing } : todo
-  //     )
-  //   );
-  // };
+ 
+    async function eiditTask (tasks,id)  {
+      const dataRef = ref(db);
+      const resultRef = ref(db, `Tasks/${uid}/`);
+      // const dataQuery = query(dataRef, orderByKey());
+      
+     if(currentUser){
+      
+      get(child(dataRef,"Tasks/" + uid)).then((snapshot) => {
+        if (snapshot.exists()) {
+         set(resultRef, snapshot.val().map((task) => 
+         task.id === id ? { ...task,task:tasks, isEiditing: !task.isEiditing } : task,
+         console.log(tasks)
+       ))
+        } else {
+          console.log("No data available");
+        }
+      })
+     .catch((error) => {
+        console.error(error);
+      });
+     }else{
+      setTodos(
+            todos.map((todo) =>
+              todo.id === id ? { ...todo, task:tasks, isEiditing: !todo.isEiditing } : todo
+            )
+          );
+     }
+    };
   return (
     <div className={classes.container}>
       <h1>My Task List</h1>
