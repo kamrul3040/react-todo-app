@@ -12,16 +12,14 @@ export default function InputForms({ addTodo, todos, setTodo }) {
   const lastTodo = todos.slice(-1)[0];
   const { uid } = currentUser || {};
 
+  const handleSubmit = (e) => {
+    if (value !== "") {
+      addTodo(value);
 
-const handleSubmit = (e) => {
-  if(value!=="" ){
-    addTodo(value);
-
-    setValue("");
-  }
-  e.preventDefault();
-  
-};
+      setValue("");
+    }
+    e.preventDefault();
+  };
   useEffect(() => {
     if (todos !== "" && todos.length > 0 && currentUser) {
       const writeUserData = async () => {
@@ -31,7 +29,7 @@ const handleSubmit = (e) => {
         const dbRef = ref(getDatabase());
         get(child(dbRef, `Tasks/${uid}`))
           .then((snapshot) => {
-            if (snapshot.exists() ) {
+            if (snapshot.exists()) {
               set(resultRef, [...snapshot.val(), lastTodo]).then(() => {
                 setTodo("");
               });
@@ -75,8 +73,6 @@ const handleSubmit = (e) => {
     </section>
   );
 }
-
-
 
 // my code here
 // import { child, get, getDatabase, ref, set } from "firebase/database";

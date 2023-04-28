@@ -1,8 +1,6 @@
-import React from 'react'
-import '../style/TextInput.module.css'
+import React from "react";
+import "../style/TextInput.module.css";
 
-export default function TextInput({...rest}) {
-  return (
-    <input {...rest}/>
-  )
+export default function TextInput({ ...rest }) {
+  return <input {...rest} />;
 }

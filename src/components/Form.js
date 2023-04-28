@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 
-export default function Form({children,className, ...rest}) {
+export default function Form({ children, className, ...rest }) {
   return (
-    <form {...rest} className ={className} >
-        {children}         
+    <form {...rest} className={className}>
+      {children}
     </form>
-  )
+  );
 }

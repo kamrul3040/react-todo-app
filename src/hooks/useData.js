@@ -1,8 +1,6 @@
-import {
-  getDatabase, off, onValue, ref
-} from "firebase/database";
+import { getDatabase, off, onValue, ref } from "firebase/database";
 import { useEffect, useState } from "react";
-import { useAuth } from './../contexts/AuthContext';
+import { useAuth } from "./../contexts/AuthContext";
 export default function useData(updatedData) {
   const { currentUser } = useAuth();
   const { uid } = currentUser || {};
@@ -11,8 +9,8 @@ export default function useData(updatedData) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-     // Set up Firebase listener when component mounts
-     if (uid !== null) {
+    // Set up Firebase listener when component mounts
+    if (uid !== null) {
       setLoading(true);
       async function fetchDta() {
         const databaseRef = ref(getDatabase(), "Tasks/" + uid);
@@ -20,7 +18,7 @@ export default function useData(updatedData) {
           // Get data from snapshot
           const newData = snapshot.val();
           // Update component state with new data
-            setData(newData)
+          setData(newData);
         });
 
         // Clean up Firebase listener when component unmounts

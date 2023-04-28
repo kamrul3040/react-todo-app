@@ -1,10 +1,10 @@
-import React from "react";
 import "firebase/database";
+import React from "react";
 import { useAuth } from "../contexts/AuthContext";
+import useData from "../hooks/useData";
 import classes from "../style/Output.module.css";
 import EditTask from "./EiditTask";
 import Task from "./Task";
-import useData from "../hooks/useData";
 export default function OutputForms({
   todos,
   toggleCompleted,
@@ -12,7 +12,7 @@ export default function OutputForms({
   eiditTodo,
   eiditTask,
 }) {
-  const {data, loading} = useData();
+  const { data, loading } = useData();
   const { currentUser } = useAuth();
   console.log(data);
   return (
